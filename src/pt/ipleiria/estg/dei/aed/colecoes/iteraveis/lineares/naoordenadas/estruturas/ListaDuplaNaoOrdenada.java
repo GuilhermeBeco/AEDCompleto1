@@ -157,6 +157,10 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
         return null;
     }
 
+    @Override
+    public T consultar(int indice) {
+        return null;
+    }
 
 
     @Override
