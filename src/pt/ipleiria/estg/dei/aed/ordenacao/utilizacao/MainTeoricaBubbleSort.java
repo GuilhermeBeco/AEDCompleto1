@@ -15,7 +15,7 @@ public class MainTeoricaBubbleSort {
 
     public MainTeoricaBubbleSort() {
         BubbleSort<Integer> bubbleSort = new BubbleSort<>(ComparacaoInteiros.CRITERIO);
-        bubbleSort.getEstatistica(3, 7, 2, 5, 4, 1, 6, 8, 9);
+        bubbleSort.getEstatistica(3, 7, 2, 5, 4, 1, 6, 8, 9,10);
     }
 
     public static void main(String[] args) {
