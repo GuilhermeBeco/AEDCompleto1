@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.estruturas;
 
+
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.ColecaoIteravel;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravel;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravelDuplo;
@@ -10,17 +11,14 @@ import pt.ipleiria.estg.dei.aed.pesquisa.algoritmos.PesquisaBinaria;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
-public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenada<T> {
-
-    protected No noInicial;
-    protected No noFinal;
+public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLinearNaoOrdenada<T>{
+    protected No base;
     protected int numeroElementos;
 
-    public ListaDuplaNaoOrdenada() {
-        noFinal = noInicial = null;
+    public ListaDuplaCircularBaseNaoOrdenada() {
+        base = new No();
         numeroElementos = 0;
     }
-
 
 
     protected class No implements Serializable {
@@ -31,68 +29,41 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
         protected No anterior;
 
         // Criação de nó com elemento elem no FIM da lista
-        protected No(T elem) {
-            elemento = elem;
-            this.anterior = noFinal;
-            this.seguinte = null;
+        protected No() {
+            seguinte=this;
+            anterior=this;
+            elemento=null;
 
         }
 
         // Criação de nó com elemento elem inserido em qualquer sitio excepto do FIM
         protected No(T elem, No seg) {
             elemento = elem;
+            seguinte=seg;
+            anterior=seg.anterior;
+            seg.anterior.seguinte=this;
+            seg.anterior=this;
 
-            //no seguinte
-            this.seguinte = seg;
-            //no anterior
-            this.anterior = seg.anterior;
-            seg.anterior = this;
-            if (anterior != null)//==null se for primeiro no
-            {
-                this.anterior.seguinte = this;
-            }
         }
     }
-
-    //###############################
-    //insercao no inicio e fim
-    //###############################
     @Override
     public void inserirNoInicio(T elem) {
-        if (++numeroElementos == 1) {
-            noFinal = noInicial = new No(elem);
-        } else {
-            noInicial = new No(elem, noInicial);
-        }
+        new No(elem,base.seguinte);
+        numeroElementos++;
+
     }
 
     @Override
     public void inserirNoFim(T elem) {
-        noFinal = new No(elem);
-        if (++numeroElementos == 1) {
-            noInicial = noFinal;
-        } else {
-            noFinal.anterior.seguinte = noFinal;
-        }
+        new No(elem,base.anterior);
+        numeroElementos++;
     }
-    //-----------------------------
 
-    //###############################
-    //pesquisa
-    //###############################
     protected No getNo(T elem) {
-        if (noInicial == null) {
-            return null;
-        }
-        int i = 1;
 
-        if (noInicial.elemento.equals(elem)) {
-            return noInicial;
-        }
+        No actual = base.seguinte;
 
-        No actual = noInicial;
-
-        while (actual != null && !actual.elemento.equals(elem)) {
+        while (actual != base && !actual.elemento.equals(elem)) {
             actual = actual.seguinte;
 
         }
@@ -108,13 +79,13 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
         No actual = null;
         if (indice < (numeroElementos / 2)) {
-            actual = noInicial;
+            actual = base.seguinte;
             while (indice-- > 0) {
                 actual = actual.seguinte;
             }
 
         } else {
-            actual = noFinal;
+            actual = base.anterior;
             while (++indice < numeroElementos) {
                 actual = actual.anterior;
             }
@@ -123,18 +94,15 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
     }
 
     protected No getNoPorReferencia(T elem) {
-        No actual = noInicial;
-        while (actual != null && actual.elemento != elem) {
+        No actual = base.seguinte;
+
+        while (actual != base && actual.elemento!=elem) {
             actual = actual.seguinte;
+
         }
         return actual;
-
     }
-    //-----------------------------
 
-    //###############################
-    //insercao em qualquer lugar
-    //###############################
     @Override
     public void inserir(int indice, T elem) {
         if (indice == 0) {
@@ -146,8 +114,6 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             numeroElementos++;
         }
     }
-    //-----------------------------
-
 
     @Override
     public T removerDoInicio() {
@@ -155,14 +121,12 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             return null;
         }
 
-        No aux = noInicial;
-        if (--numeroElementos == 0) {
-            noInicial = noFinal = null;
-        } else {
-            noInicial = noInicial.seguinte;
-            noInicial.anterior = null;
+        No aux = base.seguinte;
 
-        }
+            base.seguinte=base.seguinte.seguinte;
+            base.anterior=base;
+
+
         return aux.elemento;
     }
 
@@ -172,47 +136,31 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             return null;
         }
 
-        No aux = noInicial;
-        if (--numeroElementos == 0) {
-            noFinal = noInicial = null;
-        } else {
-            noFinal = noFinal.anterior;
-            //  noFinal.anterior.seguinte = noFinal;
-            noFinal.seguinte = null;
-        }
+        No aux = base.seguinte;
+
+            base.anterior=base.anterior.anterior;
+            base.seguinte=base;
+
         return aux.elemento;
     }
 
+
     @Override
     public T remover(T elem) {
-
         if (numeroElementos == 0) {
             return null;
         }
 
 
         No aux = getNo(elem);
-        if (aux == null) {
-            return null;
-        }
 
-
-        if(aux==noInicial){
-
-            return removerDoInicio();
-        }
-        else if(aux==noFinal) {
-            return removerDoFim();
-        }
-        else {
             --numeroElementos;
             aux.seguinte.anterior = aux.anterior;
             aux.anterior.seguinte = aux.seguinte;
-        }
+
 
         return aux.elemento;
     }
-
 
     @Override
     public T remover(int indice) {
@@ -222,53 +170,25 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
 
         No aux = getNo(indice);
-        if (aux == null) {
-            return null;
-        }
 
+        --numeroElementos;
+        aux.seguinte.anterior = aux.anterior;
+        aux.anterior.seguinte = aux.seguinte;
 
-        if(aux==noInicial){
-
-            return removerDoInicio();
-        }
-        else if(aux==noFinal) {
-            return removerDoFim();
-        }
-        else {
-            --numeroElementos;
-            aux.seguinte.anterior = aux.anterior;
-            aux.anterior.seguinte = aux.seguinte;
-        }
 
         return aux.elemento;
     }
-
 
     @Override
     public T removerPorReferencia(T elem) {
         if (numeroElementos == 0) {
             return null;
         }
-
-
         No aux = getNoPorReferencia(elem);
-        if (aux == null) {
-            return null;
-        }
+        --numeroElementos;
+        aux.seguinte.anterior = aux.anterior;
+        aux.anterior.seguinte = aux.seguinte;
 
-
-           if(aux==noInicial){
-
-                return removerDoInicio();
-            }
-           else if(aux==noFinal) {
-               return removerDoFim();
-           }
-           else {
-               --numeroElementos;
-            aux.seguinte.anterior = aux.anterior;
-            aux.anterior.seguinte = aux.seguinte;
-        }
 
         return aux.elemento;
     }
@@ -277,28 +197,18 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
     public T consultar(int indice) {
         No no = getNo(indice);
 
-        return no != null ? no.elemento : noInicial.elemento;
-    }
-
-
-    @Override
-    public boolean contem(Object elem) {
-        No no = noInicial;
-        while (no != null && !no.elemento.equals(elem)) {
-            no = no.seguinte;
-        }
-
-        return no != null;
+        return no != base ? no.elemento : base.seguinte.elemento;
     }
 
     @Override
-    public boolean contemReferencia(Object elem) {
-        No no = noInicial;
-        while (no != null && no.elemento != elem) {
-            no = no.seguinte;
-        }
+    public boolean contem(T elem) {
+        return getNo(elem).elemento==elem;
+    }
 
-        return no != null;
+    @Override
+    public boolean contemReferencia(T elem) {
+        return getNoPorReferencia(elem).elemento==elem;
+
     }
 
     @Override
@@ -310,12 +220,8 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
     public int getNumeroElementos() {
         return numeroElementos;
     }
-
-
     protected class Iterador implements IteradorIteravelDuplo<T> {
-        protected No proximo;
         protected No corrente;
-        protected No anterior;
 
         protected Iterador() {
             reiniciar();
@@ -323,14 +229,12 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
         @Override
         public void reiniciar() {
-            corrente = null;
-            proximo = noInicial;
-            anterior = noFinal;
+            corrente = base;
         }
 
         @Override
         public T corrente() {
-            if (corrente == null) {
+            if (corrente == base) {
                 throw new NoSuchElementException();
             }
             return corrente.elemento;
@@ -338,7 +242,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
         @Override
         public boolean podeAvancar() {
-            return proximo != null;
+            return corrente.seguinte != base;
         }
 
         @Override
@@ -347,15 +251,13 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
                 throw new NoSuchElementException();
             }
 
-            anterior = corrente;
-            corrente = proximo;
-            proximo = proximo.seguinte;
+            corrente=corrente.seguinte;
             return corrente.elemento;
         }
 
         @Override
         public boolean podeRecuar() {
-            return anterior != null;
+            return corrente.anterior != base;
         }
 
         @Override
@@ -363,9 +265,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             if (!podeRecuar()) {
                 throw new NoSuchElementException();
             }
-            proximo = corrente;
-            corrente = anterior;
-            anterior = anterior.anterior;
+            corrente=corrente.anterior;
             return corrente.elemento;
         }
     }

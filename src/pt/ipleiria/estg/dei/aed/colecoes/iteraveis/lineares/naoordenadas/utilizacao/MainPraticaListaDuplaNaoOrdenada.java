@@ -33,7 +33,8 @@ public class MainPraticaListaDuplaNaoOrdenada {
         lista.removerDoInicio();
         lista.removerDoFim();
         lista.remover(1);
-        lista.removerPorReferencia(lista.consultar(1));
+        Contacto consultar = lista.consultar(1);
+        lista.removerPorReferencia(consultar);
 
 
         System.out.println("\nApós remoção de elementos");

@@ -38,9 +38,8 @@ public class Contacto {
 
     @Override
     public String toString() {
-        return "Contacto{" +
-                "Nome='" + primeiroNome + '\'' +
-                ", Apelido='" + ultimoNome + '\'' +
+        return primeiroNome +
+                " " + ultimoNome + '\'' +
                 ", Telefone=" + numeroTelefone +
                 ", Morada='" + morada + '\'' +
                 ", dataNascimento=" + dataNascimento +
