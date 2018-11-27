@@ -1,4 +1,4 @@
-/*package pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.utilizacao;
+package pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.utilizacao;
 
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravelDuplo;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.estruturas.ListaDuplaNaoOrdenada;
@@ -47,4 +47,3 @@ public class MainPraticaListaDuplaNaoOrdenada {
         new MainPraticaListaDuplaNaoOrdenada();
     }
 }
-*/

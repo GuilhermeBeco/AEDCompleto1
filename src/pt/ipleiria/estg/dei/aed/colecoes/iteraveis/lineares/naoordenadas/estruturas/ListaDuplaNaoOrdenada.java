@@ -60,7 +60,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             //no anterior
             this.anterior = seg.anterior;
             seg.anterior = this;
-            if (seg.anterior != null)//==null se for primeiro no
+            if (anterior != null)//==null se for primeiro no
             {
                 this.anterior.seguinte = this;
             }
@@ -207,14 +207,25 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             return null;
         }
 
+
         No aux = getNo(elem);
-        if (--numeroElementos == 0) {
-            noFinal = noInicial = null;
-        } else {
+        if (aux == null) {
+            return null;
+        }
+
+
+        if(aux==noInicial){
+
+            return removerDoInicio();
+        }
+        else if(aux==noFinal) {
+            return removerDoFim();
+        }
+        else {
             aux.seguinte.anterior = aux.anterior;
             aux.anterior.seguinte = aux.seguinte;
-
         }
+
         return aux.elemento;
     }
 
@@ -225,14 +236,25 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             return null;
         }
 
+
         No aux = getNo(indice);
-        if (--numeroElementos == 0) {
-            noFinal = noInicial = null;
-        } else {
+        if (aux == null) {
+            return null;
+        }
+
+
+        if(aux==noInicial){
+
+            return removerDoInicio();
+        }
+        else if(aux==noFinal) {
+            return removerDoFim();
+        }
+        else {
             aux.seguinte.anterior = aux.anterior;
             aux.anterior.seguinte = aux.seguinte;
-
         }
+
         return aux.elemento;
     }
 
@@ -243,22 +265,33 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             return null;
         }
 
+
         No aux = getNoPorReferencia(elem);
-        if (--numeroElementos == 0) {
-            noFinal = noInicial = null;
-        } else {
+        if (aux == null) {
+            return null;
+        }
+
+
+           if(aux==noInicial){
+
+                return removerDoInicio();
+            }
+           else if(aux==noFinal) {
+               return removerDoFim();
+           }
+           else {
             aux.seguinte.anterior = aux.anterior;
             aux.anterior.seguinte = aux.seguinte;
-
         }
+
         return aux.elemento;
     }
 
     @Override
     public T consultar(int indice) {
-        No ant = getNo(indice);
+        No no = getNo(indice);
 
-        return ant != null ? ant.seguinte.elemento : noInicial.elemento;
+        return no != null ? no.elemento : noInicial.elemento;
     }
 
 
@@ -306,7 +339,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
         public void reiniciar() {
             corrente = null;
             proximo = noInicial;
-            anterior=noFinal;
+            anterior = noFinal;
         }
 
         @Override
@@ -328,7 +361,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
                 throw new NoSuchElementException();
             }
 
-            anterior=corrente;
+            anterior = corrente;
             corrente = proximo;
             proximo = proximo.seguinte;
             return corrente.elemento;
@@ -336,7 +369,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
         @Override
         public boolean podeRecuar() {
-            return anterior!=null;
+            return anterior != null;
         }
 
         @Override
@@ -345,8 +378,8 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
                 throw new NoSuchElementException();
             }
             proximo = corrente;
-            corrente=anterior;
-            anterior =anterior.anterior;
+            corrente = anterior;
+            anterior = anterior.anterior;
             return corrente.elemento;
         }
     }
