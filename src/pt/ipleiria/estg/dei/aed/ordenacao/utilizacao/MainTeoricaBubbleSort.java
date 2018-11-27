@@ -18,6 +18,7 @@ public class MainTeoricaBubbleSort {
         bubbleSort.getEstatistica(3, 7, 2, 5, 4, 1, 6, 8, 9,12);
     }
 
+
     public static void main(String[] args) {
         new MainTeoricaBubbleSort();
     }
