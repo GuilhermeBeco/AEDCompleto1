@@ -21,7 +21,7 @@ public class GestorContactos {
     public void inserir(Contacto contacto){
 
         Data dataNascimento = contacto.getDataNascimento();
-        Par<Data,ListaDuplaCircularBaseLimiteOrdenada<Contacto>> parDataContacto = contactosPorDataNascimento.consultarDistinto(new Par(dataNascimento, null);
+        Par<Data,ListaDuplaCircularBaseLimiteOrdenada<Contacto>> parDataContacto = contactosPorDataNascimento.consultarDistinto(new Par(dataNascimento, null));
         if(parDataContacto==null){
             parDataContacto=new Par<>(dataNascimento,new ListaDuplaCircularBaseLimiteOrdenada<>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO));
             contactosPorDataNascimento.inserir(parDataContacto);
