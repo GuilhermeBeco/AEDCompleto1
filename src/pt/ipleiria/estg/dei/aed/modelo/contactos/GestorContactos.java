@@ -59,7 +59,7 @@ public class GestorContactos {
 
         @Override
         public boolean podeAvancar() {
-            return false;
+            return iteradorContactos.podeAvancar() || iteradorParesDataContacto.podeAvancar();
         }
 
         @Override
@@ -68,7 +68,7 @@ public class GestorContactos {
         }
         @Override
         public boolean podeRecuar() {
-            return false;
+            return iteradorContactos.podeRecuar() || iteradorParesDataContacto.podeRecuar();
         }
 
         @Override
