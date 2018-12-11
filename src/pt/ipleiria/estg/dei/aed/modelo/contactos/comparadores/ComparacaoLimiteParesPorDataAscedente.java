@@ -19,6 +19,6 @@ public enum ComparacaoLimiteParesPorDataAscedente implements ComparacaoLimite<Pa
 
     @Override
     public pt.ipleiria.estg.dei.aed.utils.Par<Data, ListaDuplaCircularBaseLimiteOrdenada<Contacto>> getLimite() {
-        return null;
+        return LIMITE;
     }
 }
