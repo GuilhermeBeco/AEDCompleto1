@@ -9,9 +9,12 @@ import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteCo
 import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteParesPorDataAscedente;
 import pt.ipleiria.estg.dei.aed.utils.Par;
 
-public class GestorContactos {
-    public static final IteradorIteravelDuplo<Contacto> ITERADOR_VAZIO = new ListaDuplaCircularBaseLimiteOrdenada<Contacto>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO).iterador();
+public enum GestorContactos {
     INSTANCIA;
+    public static final IteradorIteravelDuplo<Contacto> ITERADOR_VAZIO = new ListaDuplaCircularBaseLimiteOrdenada<Contacto>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO).iterador();
+
+
+
     private ListaDuplaCircularBaseLimiteOrdenadaDistinta<Par<Data, ListaDuplaCircularBaseLimiteOrdenada<Contacto>>>contactosPorDataNascimento;
     GestorContactos(){
         contactosPorDataNascimento= new ListaDuplaCircularBaseLimiteOrdenadaDistinta<>(
@@ -54,7 +57,7 @@ public class GestorContactos {
 
         @Override
         public Contacto corrente() {
-            return null;
+            return iteradorContactos.corrente();
         }
 
         @Override
@@ -64,7 +67,10 @@ public class GestorContactos {
 
         @Override
         public Contacto avancar() {
-            return null;
+            if(!iteradorContactos.podeAvancar()){
+                iteradorContactos=iteradorParesDataContacto.avancar().getSegundo().iterador();
+            }
+            return iteradorContactos.avancar();
         }
         @Override
         public boolean podeRecuar() {
@@ -73,7 +79,11 @@ public class GestorContactos {
 
         @Override
         public Contacto recuar() {
-            return null;
+            if(!iteradorContactos.podeRecuar()){
+                iteradorContactos=iteradorParesDataContacto.recuar().getSegundo().iterador();
+
+            }
+            return  iteradorContactos.recuar();
         }
     }
 }
