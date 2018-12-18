@@ -9,16 +9,15 @@ import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteDa
 
 import static pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteParesPorDataAscedente.CRITERIO;
 
-public enum GestorContactosOtimizado {
+public enum GestorContactosBackup {
     INSTANCIA;
 
     public static final IteradorIteravelDuplo<Contacto> ITERADOR = new ListaDuplaCircularBaseLimiteOrdenada<>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO).iterador();
-  //  private TabelaHashPorSondagemComIncrementoQuadratico<Data, ListaDuplaCircularBaseLimiteOrdenadaDistinta<Contacto>> contactosPorDataNascimento;
+    private TabelaHashPorSondagemComIncrementoQuadratico<Data, ListaDuplaCircularBaseLimiteOrdenadaDistinta<Contacto>> contactosPorDataNascimento;
     private TabelaHashPorSondagemComIncrementoQuadratico<Long, Contacto> contactosPorNumeroTelefone;
     private  ListaDuplaCircularBaseLimiteOrdenadaDistinta<Data> datasNascimento;
-    private TabelaHashPorSondagemComIncrementoQuadratico<Data,GestorContactosNumaData> contactosPorDataNascimento;
 
-    GestorContactosOtimizado() {
+    GestorContactosBackup() {
         contactosPorDataNascimento=new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
         datasNascimento= new ListaDuplaCircularBaseLimiteOrdenadaDistinta<>(ComparacaoLimiteDatasAscendente.CRITERIO);
         contactosPorNumeroTelefone=new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
@@ -28,13 +27,13 @@ public enum GestorContactosOtimizado {
         //ficha7
         contactosPorNumeroTelefone.inserir(contacto.getNumeroTelefone(),contacto);
         Data dataNascimento = contacto.getDataNascimento();
-        GestorContactosNumaData contactosNaDataNascimento = contactosPorDataNascimento.consultar(dataNascimento);
+        ListaDuplaCircularBaseLimiteOrdenadaDistinta<Contacto> contactosNaDataNascimento = contactosPorDataNascimento.consultar(dataNascimento);
         if (contactosNaDataNascimento == null) {
             contactosNaDataNascimento = new ListaDuplaCircularBaseLimiteOrdenadaDistinta<>
                     (ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO);
             contactosPorDataNascimento.inserir(dataNascimento,contactosNaDataNascimento);
             datasNascimento.inserir(dataNascimento);
-            }
+        }
         contactosNaDataNascimento.inserir(contacto);
     }
     public IteradorIteravelDuplo<Contacto> consultar(Data dataNascimento){
@@ -46,7 +45,7 @@ public enum GestorContactosOtimizado {
     public Contacto removerDosContactosPorDataNascimento(Contacto contacto){
 
         Data dataNascimento = contacto.getDataNascimento();
-        GestorContactosNumaData contactosNaDataNascimento =
+        ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento =
                 contactosPorDataNascimento.consultar(dataNascimento);
         Contacto contactoRemovido = contactosNaDataNascimento.remover(contacto);
         if (contactosNaDataNascimento.isVazia()) {
@@ -80,7 +79,7 @@ public enum GestorContactosOtimizado {
             return null;
         }
 
-       contactosPorNumeroTelefone.remover(numeroTelefone);
+        contactosPorNumeroTelefone.remover(numeroTelefone);
 /*
             Data dataNascimento = contactoARemover.getDataNascimento();
             ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento =
@@ -96,7 +95,7 @@ public enum GestorContactosOtimizado {
     }
     public IteradorIteravelDuplo<Contacto> remover (Data dataNascimento){
 
-        GestorContactosNumaData contactosNaDataNascimento =
+        ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento =
                 contactosPorDataNascimento.remover(dataNascimento);
         if(contactosNaDataNascimento==null||(contactosNaDataNascimento=contactosPorDataNascimento.remover(dataNascimento))==null){
             return ITERADOR;
@@ -151,26 +150,6 @@ public enum GestorContactosOtimizado {
         }
 
 
-    }
-    private class GestorContactosNumaData{
-        private ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactos;
-        private TabelaHashPorSondagemComIncrementoQuadratico<String,ListaDuplaCircularBaseLimiteOrdenada<Contacto>> contactosPorMorada;
-
-        public GestorContactosNumaData() {
-            contactos=new ListaDuplaCircularBaseLimiteOrdenada<>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO);
-            contactosPorMorada= new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
-        }
-
-        public void inserir(Contacto contacto) {
-            contactos.inserir(contacto);
-            String morada = contacto.getMorada();
-            ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaMorada = contactosPorMorada.consultar(morada);
-            if(contactosNaMorada==null){
-                contactosNaMorada=new ListaDuplaCircularBaseLimiteOrdenada<>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO);
-                contactosPorMorada.inserir(morada,contactosNaMorada);
-            }
-            contactosNaMorada.inserir(contacto);
-        }
     }
 
 }
