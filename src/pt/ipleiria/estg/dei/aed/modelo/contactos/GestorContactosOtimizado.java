@@ -1,7 +1,9 @@
 package pt.ipleiria.estg.dei.aed.modelo.contactos;
 
+import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravel;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravelDuplo;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.associativas.estruturas.TabelaHashPorSondagemComIncrementoQuadratico;
+import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.estruturas.ListaSimplesCircularBaseNaoOrdenada;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.ordenadas.estruturas.ListaDuplaCircularBaseLimiteOrdenada;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.ordenadas.estruturas.ListaDuplaCircularBaseLimiteOrdenadaDistinta;
 import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente;
@@ -11,6 +13,7 @@ public enum GestorContactosOtimizado {
     INSTANCIA;
 
     public static final IteradorIteravelDuplo<Contacto> ITERADOR = new ListaDuplaCircularBaseLimiteOrdenada<>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO).iterador();
+    private static final IteradorIteravel<String> ITERADOR_STRING = new ListaSimplesCircularBaseNaoOrdenada<String>().iterador();
     //  private TabelaHashPorSondagemComIncrementoQuadratico<Data, ListaDuplaCircularBaseLimiteOrdenadaDistinta<Contacto>> contactosPorDataNascimento;
     private TabelaHashPorSondagemComIncrementoQuadratico<Long, Contacto> contactosPorNumeroTelefone;
     private ListaDuplaCircularBaseLimiteOrdenadaDistinta<Data> datasNascimento;
@@ -95,6 +98,10 @@ public enum GestorContactosOtimizado {
     public IteradorIteravelDuplo<Contacto> consultar(Data dataNascimentoInicio, Data dataNascimentoFim) {
         return new Iterador(dataNascimentoInicio, dataNascimentoFim);
     }
+    public IteradorIteravel<String> consultarMoradas(Data dataNascimento){
+        GestorContactosNumaData consultar = contactosPorDataNascimento.consultar(dataNascimento);
+        return consultar==null?ITERADOR_STRING:consultar.iteradorMoradas();
+    }
 
     private class Iterador implements IteradorIteravelDuplo<Contacto> {
         private IteradorIteravelDuplo<Data> iteradorDatasNascimento;
@@ -121,7 +128,7 @@ public enum GestorContactosOtimizado {
 
         public Contacto avancar() {
             if (!iteradorContactos.podeAvancar()) {
-                iteradorContactos = contactosPorDataNascimento.consultar(iteradorDatasNascimento.avancar()).iterador();
+                iteradorContactos = contactosPorDataNascimento.consultar(iteradorDatasNascimento.avancar()).iteradorContactos();
             }
             return iteradorContactos.avancar();
         }
@@ -133,7 +140,7 @@ public enum GestorContactosOtimizado {
         @Override
         public Contacto recuar() {
             if (!iteradorContactos.podeRecuar()) {
-                iteradorContactos = contactosPorDataNascimento.consultar(iteradorDatasNascimento.recuar()).iterador();
+                iteradorContactos = contactosPorDataNascimento.consultar(iteradorDatasNascimento.recuar()).iteradorContactos();
             }
             return iteradorContactos.recuar();
         }
@@ -181,6 +188,9 @@ public enum GestorContactosOtimizado {
 
         public IteradorIteravelDuplo<Contacto> iteradorContactos() {
             return contactos.iterador();
+        }
+        public IteradorIteravel<String> iteradorMoradas(){
+            return contactosPorMorada.iteradorChaves();
         }
     }
 
