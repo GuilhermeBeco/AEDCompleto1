@@ -10,13 +10,6 @@ public class ListaDuplaCircularBaseLimiteOrdenadaDistinta<T> extends ListaDuplaC
         super(cpl);
     }
 
-    public ListaDuplaCircularBaseLimiteOrdenadaDistinta(ComparacaoLimite<T> cpl, ColecaoIteravelLinearOrdenada<T> colecao) {
-        super(cpl, colecao);
-    }
-
-    public ListaDuplaCircularBaseLimiteOrdenadaDistinta(ComparacaoLimite<T> cpl, ColecaoIteravel<T> colecao) {
-        super(cpl, colecao);
-    }
 
     public void inserir(T elem) {
         No no = getNo(elem);
