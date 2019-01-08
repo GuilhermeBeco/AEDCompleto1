@@ -9,7 +9,7 @@ public enum ComparacaoContactosPorNumeroTelefoneDescendente implements Comparaca
 
     @Override
     public int comparar(Contacto o1, Contacto o2) {
-        return -Long.compare(o1.getNumeroTelefone(),o2.getNumeroTelefone());
+        return -Long.compare(o1.getNumeroTelefone(), o2.getNumeroTelefone());
         /*aplicamos o simetrico para que seja por ordem descendente*/
     }
 }

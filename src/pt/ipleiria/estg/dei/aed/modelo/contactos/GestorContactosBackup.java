@@ -7,42 +7,43 @@ import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.ordenadas.estruturas
 import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente;
 import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteDatasAscendente;
 
-import static pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoLimiteParesPorDataAscedente.CRITERIO;
-
 public enum GestorContactosBackup {
     INSTANCIA;
 
     public static final IteradorIteravelDuplo<Contacto> ITERADOR = new ListaDuplaCircularBaseLimiteOrdenada<>(ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO).iterador();
     private TabelaHashPorSondagemComIncrementoQuadratico<Data, ListaDuplaCircularBaseLimiteOrdenadaDistinta<Contacto>> contactosPorDataNascimento;
     private TabelaHashPorSondagemComIncrementoQuadratico<Long, Contacto> contactosPorNumeroTelefone;
-    private  ListaDuplaCircularBaseLimiteOrdenadaDistinta<Data> datasNascimento;
+    private ListaDuplaCircularBaseLimiteOrdenadaDistinta<Data> datasNascimento;
 
     GestorContactosBackup() {
-        contactosPorDataNascimento=new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
-        datasNascimento= new ListaDuplaCircularBaseLimiteOrdenadaDistinta<>(ComparacaoLimiteDatasAscendente.CRITERIO);
-        contactosPorNumeroTelefone=new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
+        contactosPorDataNascimento = new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
+        datasNascimento = new ListaDuplaCircularBaseLimiteOrdenadaDistinta<>(ComparacaoLimiteDatasAscendente.CRITERIO);
+        contactosPorNumeroTelefone = new TabelaHashPorSondagemComIncrementoQuadratico<>(20);
 
     }
+
     public void inserir(Contacto contacto) {
         //ficha7
-        contactosPorNumeroTelefone.inserir(contacto.getNumeroTelefone(),contacto);
+        contactosPorNumeroTelefone.inserir(contacto.getNumeroTelefone(), contacto);
         Data dataNascimento = contacto.getDataNascimento();
         ListaDuplaCircularBaseLimiteOrdenadaDistinta<Contacto> contactosNaDataNascimento = contactosPorDataNascimento.consultar(dataNascimento);
         if (contactosNaDataNascimento == null) {
             contactosNaDataNascimento = new ListaDuplaCircularBaseLimiteOrdenadaDistinta<>
                     (ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNomeAscedente.CRITERIO);
-            contactosPorDataNascimento.inserir(dataNascimento,contactosNaDataNascimento);
+            contactosPorDataNascimento.inserir(dataNascimento, contactosNaDataNascimento);
             datasNascimento.inserir(dataNascimento);
         }
         contactosNaDataNascimento.inserir(contacto);
     }
-    public IteradorIteravelDuplo<Contacto> consultar(Data dataNascimento){
-        ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento=contactosPorDataNascimento.consultar(dataNascimento);
-        return contactosNaDataNascimento!=null?contactosNaDataNascimento.iterador():
+
+    public IteradorIteravelDuplo<Contacto> consultar(Data dataNascimento) {
+        ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento = contactosPorDataNascimento.consultar(dataNascimento);
+        return contactosNaDataNascimento != null ? contactosNaDataNascimento.iterador() :
                 ITERADOR;
 
     }
-    public Contacto removerDosContactosPorDataNascimento(Contacto contacto){
+
+    public Contacto removerDosContactosPorDataNascimento(Contacto contacto) {
 
         Data dataNascimento = contacto.getDataNascimento();
         ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento =
@@ -54,9 +55,10 @@ public enum GestorContactosBackup {
         }
         return contactoRemovido;
     }
-    public Contacto remover(long numeroTelefone){
+
+    public Contacto remover(long numeroTelefone) {
         Contacto remover = contactosPorNumeroTelefone.remover(numeroTelefone);
-        if(remover ==null){
+        if (remover == null) {
             return null;
         }
 
@@ -73,9 +75,10 @@ public enum GestorContactosBackup {
         return removerDosContactosPorDataNascimento(remover);
 
     }
-    public Contacto remover (Contacto contactoARemover){
+
+    public Contacto remover(Contacto contactoARemover) {
         long numeroTelefone;
-        if(contactoARemover==null||contactoARemover.equals(contactosPorNumeroTelefone.consultar((numeroTelefone=contactoARemover.getNumeroTelefone())))){
+        if (contactoARemover == null || contactoARemover.equals(contactosPorNumeroTelefone.consultar((numeroTelefone = contactoARemover.getNumeroTelefone())))) {
             return null;
         }
 
@@ -93,58 +96,63 @@ public enum GestorContactosBackup {
 
         return removerDosContactosPorDataNascimento(contactoARemover);
     }
-    public IteradorIteravelDuplo<Contacto> remover (Data dataNascimento){
+
+    public IteradorIteravelDuplo<Contacto> remover(Data dataNascimento) {
 
         ListaDuplaCircularBaseLimiteOrdenada<Contacto> contactosNaDataNascimento =
                 contactosPorDataNascimento.remover(dataNascimento);
-        if(contactosNaDataNascimento==null||(contactosNaDataNascimento=contactosPorDataNascimento.remover(dataNascimento))==null){
+        if (contactosNaDataNascimento == null || (contactosNaDataNascimento = contactosPorDataNascimento.remover(dataNascimento)) == null) {
             return ITERADOR;
         }
         datasNascimento.remover(dataNascimento);
-        for(Contacto contacto:contactosNaDataNascimento){
+        for (Contacto contacto : contactosNaDataNascimento) {
             contactosPorNumeroTelefone.remover(contacto.getNumeroTelefone());
         }
         return contactosNaDataNascimento.iterador();
     }
 
-    public IteradorIteravelDuplo<Contacto> consultar (Data dataNascimentoInicio,Data dataNascimentoFim){
-        return new Iterador(dataNascimentoInicio,dataNascimentoFim);
+    public IteradorIteravelDuplo<Contacto> consultar(Data dataNascimentoInicio, Data dataNascimentoFim) {
+        return new Iterador(dataNascimentoInicio, dataNascimentoFim);
     }
-    private class Iterador implements IteradorIteravelDuplo<Contacto>{
+
+    private class Iterador implements IteradorIteravelDuplo<Contacto> {
         private IteradorIteravelDuplo<Data> iteradorDatasNascimento;
         private IteradorIteravelDuplo<Contacto> iteradorContactos;
 
-        public Iterador(Data dataNascimentoInicio,Data dataNascimentoFim){
-            iteradorDatasNascimento=datasNascimento.consultar(dataNascimentoInicio,dataNascimentoFim);
+        public Iterador(Data dataNascimentoInicio, Data dataNascimentoFim) {
+            iteradorDatasNascimento = datasNascimento.consultar(dataNascimentoInicio, dataNascimentoFim);
             reiniciar();
 
         }
-        public void reiniciar(){
-            iteradorContactos=ITERADOR;
+
+        public void reiniciar() {
+            iteradorContactos = ITERADOR;
             iteradorDatasNascimento.reiniciar();
         }
 
-        public Contacto corrente(){
+        public Contacto corrente() {
             return iteradorContactos.corrente();
         }
-        public boolean podeAvancar(){
-            return iteradorContactos.podeAvancar()||iteradorDatasNascimento.podeAvancar();
+
+        public boolean podeAvancar() {
+            return iteradorContactos.podeAvancar() || iteradorDatasNascimento.podeAvancar();
         }
-        public Contacto avancar(){
-            if(!iteradorContactos.podeAvancar()){
-                iteradorContactos=contactosPorDataNascimento.consultar(iteradorDatasNascimento.avancar()).iterador();
+
+        public Contacto avancar() {
+            if (!iteradorContactos.podeAvancar()) {
+                iteradorContactos = contactosPorDataNascimento.consultar(iteradorDatasNascimento.avancar()).iterador();
             }
             return iteradorContactos.avancar();
         }
 
-        public boolean podeRecuar(){
-            return iteradorContactos.podeRecuar()||iteradorDatasNascimento.podeRecuar();
+        public boolean podeRecuar() {
+            return iteradorContactos.podeRecuar() || iteradorDatasNascimento.podeRecuar();
         }
 
         @Override
         public Contacto recuar() {
-            if(!iteradorContactos.podeRecuar()){
-                iteradorContactos=contactosPorDataNascimento.consultar(iteradorDatasNascimento.recuar()).iterador();
+            if (!iteradorContactos.podeRecuar()) {
+                iteradorContactos = contactosPorDataNascimento.consultar(iteradorDatasNascimento.recuar()).iterador();
             }
             return iteradorContactos.recuar();
         }

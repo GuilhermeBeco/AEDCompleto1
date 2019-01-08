@@ -11,7 +11,7 @@ public class MainPraticaJogoTorresHanoi2 {
 
         //EstatisticaDeChamadasEMovimentos estatistica = new EstatisticaDeChamadasEMovimentos();
 
-        Hanoi.executar(3,'X','Y','Z');
+        Hanoi.executar(3, 'X', 'Y', 'Z');
         //Hanoi.getEstatistica(3);
     }
 

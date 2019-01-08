@@ -10,7 +10,7 @@ public enum ComparacaoLimiteParesPorDataAscedente implements ComparacaoLimite<Pa
 
     CRITERIO;
 
-    private static final Par<Data,ListaDuplaCircularBaseLimiteOrdenada<Contacto>> LIMITE = new Par<>(new Data(0,0,Integer.MAX_VALUE),null);
+    private static final Par<Data, ListaDuplaCircularBaseLimiteOrdenada<Contacto>> LIMITE = new Par<>(new Data(0, 0, Integer.MAX_VALUE), null);
 
     @Override
     public int comparar(Par<Data, ListaDuplaCircularBaseLimiteOrdenada<Contacto>> o1, Par<Data, ListaDuplaCircularBaseLimiteOrdenada<Contacto>> o2) {

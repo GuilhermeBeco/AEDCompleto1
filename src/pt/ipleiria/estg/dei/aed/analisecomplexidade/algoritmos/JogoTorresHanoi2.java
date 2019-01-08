@@ -14,18 +14,18 @@ public class JogoTorresHanoi2 {
         //caso base
         if (n == 1) {
             //origem.colocar(destino);
-            System.out.println("Movimento de "+ origem +" para "+destino+". Var. Aux: "+aux);
+            System.out.println("Movimento de " + origem + " para " + destino + ". Var. Aux: " + aux);
             estatistica.incrementarMovimentos();
             return;
         }
 
-        executar(estatistica,n - 1, origem, destino, aux);
-        executar(estatistica,1, origem, aux, destino);
-        executar(estatistica,n - 1, aux, origem, destino);
+        executar(estatistica, n - 1, origem, destino, aux);
+        executar(estatistica, 1, origem, aux, destino);
+        executar(estatistica, n - 1, aux, origem, destino);
     }
 
 
-/*DEBUG*/
+    /*DEBUG*/
     public void executar(int n, char A, char B, char C) {
 
         if (n <= 0) {
@@ -33,7 +33,7 @@ public class JogoTorresHanoi2 {
         }
         //caso base
         if (n == 1) {
-            System.out.println("Movimento de "+ A +" para "+C+". Var. Aux: "+B);
+            System.out.println("Movimento de " + A + " para " + C + ". Var. Aux: " + B);
 
             return;
         }

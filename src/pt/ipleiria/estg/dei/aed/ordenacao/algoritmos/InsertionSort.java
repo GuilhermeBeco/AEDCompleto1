@@ -13,8 +13,8 @@ public class InsertionSort<T> extends AlgoritmoOrdenacao<T> //implements Compara
     @Override
     public void ordenar(EstatisticaDeComparacoesETrocas estatistica, T... elementos) {
         /*
-        * i COMEÇA A 1 : [*, i, *, *]
-        * */
+         * i COMEÇA A 1 : [*, i, *, *]
+         * */
 
         for (int i = 1; i < elementos.length; i++) {
             estatistica.incrementarComparacoes();
@@ -26,11 +26,10 @@ public class InsertionSort<T> extends AlgoritmoOrdenacao<T> //implements Compara
              *
              * */
             //comparacao do j primeiro, pois se j falhar, falha logo a condicao
-            while (j >= 0 && (criterio.comparar(elementos[j], aux) > 0))
-            {
+            while (j >= 0 && (criterio.comparar(elementos[j], aux) > 0)) {
                 /*
-                * elementos[j] é maior que aux;
-                * */
+                 * elementos[j] é maior que aux;
+                 * */
                 estatistica.incrementarComparacoes();
                 elementos[j + 1] = elementos[j];
                 /*
@@ -42,7 +41,7 @@ public class InsertionSort<T> extends AlgoritmoOrdenacao<T> //implements Compara
                 j--;
 
             }
-            elementos[j+1] = aux;
+            elementos[j + 1] = aux;
             /*
             AUX DEVE IR PARA A POSICAO CORRECTA
             [menor que aux, aux, *,*]
@@ -51,8 +50,8 @@ public class InsertionSort<T> extends AlgoritmoOrdenacao<T> //implements Compara
     }
 
     /*
-    * A COMPAR
-    *
-    * */
+     * A COMPAR
+     *
+     * */
 
 }

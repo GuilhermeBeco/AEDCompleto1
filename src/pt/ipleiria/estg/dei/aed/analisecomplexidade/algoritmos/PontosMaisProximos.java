@@ -3,38 +3,32 @@ package pt.ipleiria.estg.dei.aed.analisecomplexidade.algoritmos;
 import pt.ipleiria.estg.dei.aed.utils.Par;
 
 import java.awt.geom.Point2D;
-import java.util.LinkedList;
 
 public class PontosMaisProximos {
 
-    public Par<Point2D,Point2D> executar(Point2D... pontos)
-    {
-        double distanciaActual = 0,distanciaMenor=Double.MAX_VALUE;
-        Par<Point2D,Point2D> pontosMaisProx= new Par(null,null);
+    public Par<Point2D, Point2D> executar(Point2D... pontos) {
+        double distanciaActual = 0, distanciaMenor = Double.MAX_VALUE;
+        Par<Point2D, Point2D> pontosMaisProx = new Par(null, null);
         //LinkedList<Point2D> pontosMaisProx = new LinkedList<>();
-        for (int i=0;i<pontos.length;i++)
-        {
-            for(int j=i+1;j<pontos.length;j++)
-            {
+        for (int i = 0; i < pontos.length; i++) {
+            for (int j = i + 1; j < pontos.length; j++) {
 
-                distanciaActual = pontos[i].distance(pontos[i].getX(),pontos[i].getY(),pontos[j].getX(),pontos[j].getY());
-                System.out.println("distancia actual: "+distanciaActual);
-                if (distanciaActual==0)
-                {
+                distanciaActual = pontos[i].distance(pontos[i].getX(), pontos[i].getY(), pontos[j].getX(), pontos[j].getY());
+                System.out.println("distancia actual: " + distanciaActual);
+                if (distanciaActual == 0) {
                     System.out.println("distancia actual igual a 0\n");
                     /*
                     distanciaMin=distanciaActual;
                     pontosMaisProx.setPrimeiro(pontos[i]);
                     pontosMaisProx.setSegundo(pontos[j]);*/
                 }
-                if(distanciaActual<distanciaMenor)
-                {
-                    distanciaMenor=distanciaActual;
+                if (distanciaActual < distanciaMenor) {
+                    distanciaMenor = distanciaActual;
                     pontosMaisProx.setPrimeiro(pontos[i]);
                     pontosMaisProx.setSegundo(pontos[j]);
                 }
             }
-            }
+        }
 
 
         return pontosMaisProx;

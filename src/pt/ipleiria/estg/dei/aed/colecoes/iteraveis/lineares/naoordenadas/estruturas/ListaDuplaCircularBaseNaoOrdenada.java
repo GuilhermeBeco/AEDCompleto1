@@ -1,17 +1,13 @@
 package pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.estruturas;
 
 
-import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.ColecaoIteravel;
-import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravel;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.IteradorIteravelDuplo;
 import pt.ipleiria.estg.dei.aed.colecoes.iteraveis.lineares.naoordenadas.ColecaoIteravelLinearNaoOrdenada;
-import pt.ipleiria.estg.dei.aed.modelo.contactos.comparadores.ComparacaoContactosPorNumeroTelefoneDescendente;
-import pt.ipleiria.estg.dei.aed.pesquisa.algoritmos.PesquisaBinaria;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
-public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLinearNaoOrdenada<T>{
+public class ListaDuplaCircularBaseNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenada<T> {
     protected No base;
     protected int numeroElementos;
 
@@ -20,42 +16,16 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
         numeroElementos = 0;
     }
 
-
-    protected class No implements Serializable {
-        protected static final long serialVersionUID = 1L;
-
-        protected T elemento;
-        protected No seguinte;
-        protected No anterior;
-
-        // Criação de nó com elemento elem no FIM da lista
-        protected No() {
-            seguinte=this;
-            anterior=this;
-            elemento=null;
-
-        }
-
-        // Criação de nó com elemento elem inserido em qualquer sitio excepto do FIM
-        protected No(T elem, No seg) {
-            elemento = elem;
-            seguinte=seg;
-            anterior=seg.anterior;
-            seg.anterior.seguinte=this;
-            seg.anterior=this;
-
-        }
-    }
     @Override
     public void inserirNoInicio(T elem) {
-        new No(elem,base.seguinte);
+        new No(elem, base.seguinte);
         numeroElementos++;
 
     }
 
     @Override
     public void inserirNoFim(T elem) {
-        new No(elem,base.anterior);
+        new No(elem, base.anterior);
         numeroElementos++;
     }
 
@@ -96,7 +66,7 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
     protected No getNoPorReferencia(T elem) {
         No actual = base.seguinte;
 
-        while (actual != base && actual.elemento!=elem) {
+        while (actual != base && actual.elemento != elem) {
             actual = actual.seguinte;
 
         }
@@ -123,8 +93,8 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
 
         No aux = base.seguinte;
 
-            base.seguinte=base.seguinte.seguinte;
-            base.anterior=base;
+        base.seguinte = base.seguinte.seguinte;
+        base.anterior = base;
 
 
         return aux.elemento;
@@ -138,12 +108,11 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
 
         No aux = base.seguinte;
 
-            base.anterior=base.anterior.anterior;
-            base.seguinte=base;
+        base.anterior = base.anterior.anterior;
+        base.seguinte = base;
 
         return aux.elemento;
     }
-
 
     @Override
     public T remover(T elem) {
@@ -154,9 +123,9 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
 
         No aux = getNo(elem);
 
-            --numeroElementos;
-            aux.seguinte.anterior = aux.anterior;
-            aux.anterior.seguinte = aux.seguinte;
+        --numeroElementos;
+        aux.seguinte.anterior = aux.anterior;
+        aux.anterior.seguinte = aux.seguinte;
 
 
         return aux.elemento;
@@ -202,12 +171,12 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
 
     @Override
     public boolean contem(T elem) {
-        return getNo(elem).elemento==elem;
+        return getNo(elem).elemento == elem;
     }
 
     @Override
     public boolean contemReferencia(T elem) {
-        return getNoPorReferencia(elem).elemento==elem;
+        return getNoPorReferencia(elem).elemento == elem;
 
     }
 
@@ -220,6 +189,33 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
     public int getNumeroElementos() {
         return numeroElementos;
     }
+
+    protected class No implements Serializable {
+        protected static final long serialVersionUID = 1L;
+
+        protected T elemento;
+        protected No seguinte;
+        protected No anterior;
+
+        // Criação de nó com elemento elem no FIM da lista
+        protected No() {
+            seguinte = this;
+            anterior = this;
+            elemento = null;
+
+        }
+
+        // Criação de nó com elemento elem inserido em qualquer sitio excepto do FIM
+        protected No(T elem, No seg) {
+            elemento = elem;
+            seguinte = seg;
+            anterior = seg.anterior;
+            seg.anterior.seguinte = this;
+            seg.anterior = this;
+
+        }
+    }
+
     protected class Iterador implements IteradorIteravelDuplo<T> {
         protected No corrente;
 
@@ -251,7 +247,7 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
                 throw new NoSuchElementException();
             }
 
-            corrente=corrente.seguinte;
+            corrente = corrente.seguinte;
             return corrente.elemento;
         }
 
@@ -265,7 +261,7 @@ public class ListaDuplaCircularBaseNaoOrdenada <T> implements ColecaoIteravelLin
             if (!podeRecuar()) {
                 throw new NoSuchElementException();
             }
-            corrente=corrente.anterior;
+            corrente = corrente.anterior;
             return corrente.elemento;
         }
     }
