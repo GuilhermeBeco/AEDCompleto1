@@ -59,4 +59,23 @@ public class Data {
         return Integer.compare(dia, data.dia);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Data)) return false;
+
+        Data data = (Data) o;
+
+        if (dia != data.dia) return false;
+        if (mes != data.mes) return false;
+        return ano == data.ano;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = dia;
+        result = 31 * result + mes;
+        result = 31 * result + ano;
+        return result;
+    }
 }

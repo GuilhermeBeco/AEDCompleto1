@@ -10,12 +10,7 @@ public enum ComparacaoLimiteContactosPorPrimeiroNomeAscedenteSeguidoPorUltimoNom
 
     @Override
     public Contacto getLimite() {
-        return null;
-    }
-
-    @Override
-    public boolean isElementoValido(Contacto elem) {
-        return false;
+        return LIMITE;
     }
 
     @Override

@@ -24,8 +24,9 @@ public class ListaDuplaCircularBaseLimiteOrdenada<T> implements ColecaoIteravelL
     protected int numeroElementos;
 
     public ListaDuplaCircularBaseLimiteOrdenada(ComparacaoLimite<T> cpl) {
-        base = new No();
         criterio = cpl;
+        base = new No();
+
         numeroElementos = 0;
     }
 
